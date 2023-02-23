@@ -2,3 +2,5 @@ django
 djangorestframework
 requests
 python-dotenv
+pytest
+django-background-tasks
