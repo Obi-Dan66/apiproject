@@ -3,4 +3,5 @@ djangorestframework
 requests
 python-dotenv
 pytest
-django-background-tasks
+psycopg2-binary
+django-cors-headers
