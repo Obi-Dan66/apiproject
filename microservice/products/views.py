@@ -1,7 +1,6 @@
 import json
 import requests
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -10,6 +9,7 @@ from .serializers import ProductSerializer, OfferSerializer
 from django.conf import settings
 from rest_framework import generics
 from django.views.generic import DetailView
+from rest_framework import status
 
 class ProductList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
@@ -94,3 +94,12 @@ def list_product_offers(request, pk):
     offers = Offer.objects.filter(product=product)
     serializer = OfferSerializer(offers, many=True)
     return Response(serializer.data)
+
+@api_view(['POST'])
+def create_post(request):
+    # check if the request contains an access token
+    if 'Authorization' not in request.headers:
+        return Response({'error': 'Access token is missing.'}, status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        access_token = request.headers['Authorization'].split(' ')[1]
+    return Response({'success': 'Post created.'}, status=status.HTTP_201_CREATED)
